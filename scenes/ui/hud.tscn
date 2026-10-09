@@ -104,25 +104,6 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "Advance Day"
 
-[node name="InventoryChip" type="HBoxContainer" parent="TopPanel/Ledger"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="InventoryIcon" type="TextureRect" parent="TopPanel/Ledger/InventoryChip"]
-layout_mode = 2
-custom_minimum_size = Vector2(32, 32)
-size_flags_vertical = 4
-texture = ExtResource("icon_Inventory")
-expand_mode = 1
-stretch_mode = 5
-mouse_filter = 2
-
-[node name="InventoryLabel" type="Label" parent="TopPanel/Ledger/InventoryChip"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Inventory: Empty"
-size_flags_horizontal = 3
-text_overrun_behavior = 3
 
 [node name="ToastPanel" type="PanelContainer" parent="."]
 unique_name_in_owner = true
