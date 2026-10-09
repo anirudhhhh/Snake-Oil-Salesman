@@ -27,7 +27,7 @@ func _ready() -> void:
 		process_mode = Node.PROCESS_MODE_DISABLED
 		return
 
-	color_rect.color = chest_color
+	color_rect.visible = false
 	prompt_label.visible = false
 	prompt_label.text = "[E] Pick up %s" % item_name
 	body_entered.connect(_on_body_entered)
