@@ -9,7 +9,6 @@ signal layout_requested
 @onready var kurtos_label: Label = %KurtosLabel
 @onready var day_label: Label = %DayLabel
 @onready var trust_label: Label = %TrustLabel
-@onready var inventory_label: Label = %InventoryLabel
 @onready var advance_day_btn: Button = %AdvanceDayBtn
 @onready var inventory_btn: Button = %InventoryBtn
 @onready var toast_panel: PanelContainer = %ToastPanel
@@ -35,8 +34,6 @@ func _ready() -> void:
 		_update_kurtos(game_state.player_kurtos, game_state.goal_kurtos)
 		_update_day(game_state.current_day, game_state.max_days)
 		_update_trust(game_state.overall_trust)
-		_update_inventory(game_state.inventory)
-
 
 func _process(delta: float) -> void:
 	if toast_panel.visible:
@@ -110,9 +107,6 @@ func _on_overall_trust_changed(new_val: int, _delta: int) -> void:
 
 
 func _on_item_added(item: Dictionary) -> void:
-	var game_state = get_node_or_null("/root/GameState")
-	if game_state:
-		_update_inventory(game_state.inventory)
 	show_toast("Acquired item: %s!" % str(item.get("name", "Item")), true, 3.0)
 
 
@@ -130,18 +124,6 @@ func _update_day(day: int, max_d: int) -> void:
 
 func _update_trust(trust: int) -> void:
 	trust_label.text = "Reputation: %d%%" % trust
-
-
-func _update_inventory(items: Array[Dictionary]) -> void:
-	if items.is_empty():
-		inventory_label.text = "Inventory: Empty"
-		inventory_label.tooltip_text = "Your satchel is empty."
-		return
-	var names: Array = []
-	for it in items:
-		names.append(str(it.get("name", "Item")))
-	inventory_label.text = "Inventory: %s" % ", ".join(names)
-	inventory_label.tooltip_text = "Inventory\n" + "\n".join(names)
 
 
 func _format_number(n: int) -> String:
