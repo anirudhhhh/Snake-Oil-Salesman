@@ -26,6 +26,22 @@
 [ext_resource type="Texture2D" path="res://assets/characters/rpg_pack/npc_marla.png" id="24_marla"]
 [ext_resource type="Texture2D" path="res://assets/characters/rpg_pack/npc_cedric.png" id="25_cedric"]
 [ext_resource type="Texture2D" path="res://assets/characters/rpg_pack/npc_arthur.png" id="26_arthur"]
+[ext_resource type="Shader" path="res://shaders/grass_wind_ripple.gdshader" id="27_shader_grass"]
+[ext_resource type="Texture2D" path="res://assets/village_top_down/path_terrain_9patch.png" id="28_path9p"]
+[ext_resource type="PackedScene" path="res://assets/objects/grass_tuft.tscn" id="29_tuft"]
+[ext_resource type="PackedScene" path="res://assets/objects/village_well.tscn" id="30_well"]
+[ext_resource type="Texture2D" path="res://assets/village_top_down/details/stone_paver_1.png" id="31_paver1"]
+[ext_resource type="Texture2D" path="res://assets/village_top_down/details/stone_paver_2.png" id="32_paver2"]
+[ext_resource type="Texture2D" path="res://assets/village_top_down/details/pebbles_1.png" id="33_peb1"]
+[ext_resource type="Texture2D" path="res://assets/village_top_down/details/pebbles_2.png" id="34_peb2"]
+[ext_resource type="Texture2D" path="res://assets/village_top_down/details/cracked_earth.png" id="35_crack"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_grass_bg"]
+shader = ExtResource("27_shader_grass")
+shader_parameter/wind_speed = 1.1
+shader_parameter/wave_frequency = 0.007
+shader_parameter/wave_intensity = 0.07
+shader_parameter/wave_tint = Color(0.88, 1.08, 0.78, 1.0)
 
 [node name="Main" type="Node2D" unique_id=318791002]
 
@@ -34,6 +50,7 @@
 [node name="Ground" type="Node2D" parent="." unique_id=921499115]
 
 [node name="GrassBackground" type="TextureRect" parent="Ground" unique_id=1735997256]
+material = SubResource("ShaderMaterial_grass_bg")
 offset_left = -20.0
 offset_top = -20.0
 offset_right = 1180.0
@@ -41,45 +58,197 @@ offset_bottom = 680.0
 texture = ExtResource("2_grass")
 stretch_mode = 1
 
-[node name="PlazaCenter" type="TextureRect" parent="Ground" unique_id=1149089489]
+[node name="PlazaCenter" type="NinePatchRect" parent="Ground" unique_id=1149089489]
 offset_left = 220.0
 offset_top = 280.0
 offset_right = 800.0
 offset_bottom = 410.0
-texture = ExtResource("3_ground")
-stretch_mode = 1
+texture = ExtResource("28_path9p")
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 
-[node name="BakeryPath" type="TextureRect" parent="Ground" unique_id=187903880]
+[node name="BakeryPath" type="NinePatchRect" parent="Ground" unique_id=187903880]
 offset_left = 130.0
 offset_top = 190.0
-offset_right = 230.0
+offset_right = 240.0
 offset_bottom = 300.0
-texture = ExtResource("3_ground")
-stretch_mode = 1
+texture = ExtResource("28_path9p")
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 
-[node name="ChurchPath" type="TextureRect" parent="Ground" unique_id=1990054557]
+[node name="ChurchPath" type="NinePatchRect" parent="Ground" unique_id=1990054557]
 offset_left = 230.0
 offset_top = 390.0
 offset_right = 330.0
 offset_bottom = 620.0
-texture = ExtResource("3_ground")
-stretch_mode = 1
+texture = ExtResource("28_path9p")
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 
-[node name="CedricPath" type="TextureRect" parent="Ground" unique_id=1457587347]
+[node name="CedricPath" type="NinePatchRect" parent="Ground" unique_id=1457587347]
 offset_left = 720.0
 offset_top = 170.0
 offset_right = 920.0
-offset_bottom = 270.0
-texture = ExtResource("3_ground")
-stretch_mode = 1
+offset_bottom = 290.0
+texture = ExtResource("28_path9p")
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
 
-[node name="VaultPath" type="TextureRect" parent="Ground" unique_id=545304532]
+[node name="VaultPath" type="NinePatchRect" parent="Ground" unique_id=545304532]
 offset_left = 770.0
 offset_top = 390.0
 offset_right = 980.0
 offset_bottom = 490.0
-texture = ExtResource("3_ground")
-stretch_mode = 1
+texture = ExtResource("28_path9p")
+patch_margin_left = 16
+patch_margin_top = 16
+patch_margin_right = 16
+patch_margin_bottom = 16
+axis_stretch_horizontal = 1
+axis_stretch_vertical = 1
+
+[node name="PathDetails" type="Node2D" parent="Ground"]
+
+[node name="Paver_Bakery1" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(170, 210)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("31_paver1")
+
+[node name="Paver_Bakery2" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(190, 240)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("32_paver2")
+
+[node name="Pebbles_Bakery1" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(160, 275)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("33_peb1")
+
+[node name="Pebbles_Bakery2" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(210, 220)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("34_peb2")
+
+[node name="Paver_Plaza1" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(300, 320)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("31_paver1")
+
+[node name="Paver_Plaza2" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(360, 360)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("32_paver2")
+
+[node name="Paver_Plaza3" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(420, 330)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("31_paver1")
+
+[node name="Paver_Plaza4" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(540, 320)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("32_paver2")
+
+[node name="Paver_Plaza5" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(630, 350)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("31_paver1")
+
+[node name="Paver_Plaza6" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(710, 330)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("32_paver2")
+
+[node name="Pebbles_Plaza1" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(330, 370)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("33_peb1")
+
+[node name="Pebbles_Plaza2" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(450, 380)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("34_peb2")
+
+[node name="Pebbles_Plaza3" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(600, 310)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("33_peb1")
+
+[node name="Pebbles_Plaza4" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(670, 380)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("34_peb2")
+
+[node name="Crack_Plaza1" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(510, 370)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("35_crack")
+
+[node name="Paver_Church1" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(275, 430)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("31_paver1")
+
+[node name="Paver_Church2" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(285, 480)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("32_paver2")
+
+[node name="Paver_Church3" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(270, 530)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("31_paver1")
+
+[node name="Pebbles_Church1" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(290, 560)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("33_peb1")
+
+[node name="Paver_Cedric1" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(760, 230)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("31_paver1")
+
+[node name="Paver_Cedric2" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(810, 215)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("32_paver2")
+
+[node name="Pebbles_Cedric1" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(780, 250)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("34_peb2")
+
+[node name="Paver_Vault1" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(820, 430)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("31_paver1")
+
+[node name="Paver_Vault2" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(880, 440)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("32_paver2")
+
+[node name="Pebbles_Vault1" type="Sprite2D" parent="Ground/PathDetails"]
+position = Vector2(850, 460)
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("33_peb1")
 
 [node name="Environment" type="Node2D" parent="." unique_id=1779528696]
 
@@ -129,6 +298,210 @@ position = Vector2(880, 270)
 fence_texture = ExtResource("10_fence1")
 tile_count = 6
 
+[node name="VillageWell" parent="Environment" instance=ExtResource("30_well")]
+position = Vector2(480, 345)
+
+[node name="GrassTufts" type="Node2D" parent="Environment"]
+
+[node name="Tuft_PN1" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(240, 274)
+tuft_type = "tall"
+
+[node name="Tuft_PN2" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(270, 272)
+tuft_type = "wildflower_gold"
+
+[node name="Tuft_PN3" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(320, 275)
+tuft_type = "clover"
+
+[node name="Tuft_PN4" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(380, 273)
+tuft_type = "wildflower_blue"
+
+[node name="Tuft_PN5" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(440, 274)
+tuft_type = "tall"
+
+[node name="Tuft_PN6" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(620, 274)
+tuft_type = "moss_rock"
+
+[node name="Tuft_PN7" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(660, 272)
+tuft_type = "tall"
+
+[node name="Tuft_PN8" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(710, 275)
+tuft_type = "wildflower_gold"
+
+[node name="Tuft_PN9" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(770, 273)
+tuft_type = "wildflower_blue"
+
+[node name="Tuft_PS1" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(210, 416)
+tuft_type = "tall"
+
+[node name="Tuft_PS2" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(350, 418)
+tuft_type = "wildflower_gold"
+
+[node name="Tuft_PS3" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(410, 417)
+tuft_type = "clover"
+
+[node name="Tuft_PS4" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(470, 419)
+tuft_type = "wildflower_blue"
+
+[node name="Tuft_PS5" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(530, 417)
+tuft_type = "tall"
+
+[node name="Tuft_PS6" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(590, 418)
+tuft_type = "boulder"
+
+[node name="Tuft_PS7" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(650, 416)
+tuft_type = "tall"
+
+[node name="Tuft_PS8" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(710, 418)
+tuft_type = "wildflower_gold"
+
+[node name="Tuft_PS9" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(780, 417)
+tuft_type = "clover"
+
+[node name="Tuft_Bakery1" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(115, 210)
+tuft_type = "tall"
+
+[node name="Tuft_Bakery2" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(118, 250)
+tuft_type = "wildflower_blue"
+
+[node name="Tuft_Bakery3" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(120, 290)
+tuft_type = "clover"
+
+[node name="Tuft_Bakery4" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(245, 210)
+tuft_type = "wildflower_gold"
+
+[node name="Tuft_Bakery5" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(248, 250)
+tuft_type = "tall"
+
+[node name="Tuft_Church1" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(215, 450)
+tuft_type = "tall"
+
+[node name="Tuft_Church2" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(218, 510)
+tuft_type = "wildflower_blue"
+
+[node name="Tuft_Church3" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(216, 570)
+tuft_type = "moss_rock"
+
+[node name="Tuft_Church4" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(345, 450)
+tuft_type = "tall"
+
+[node name="Tuft_Church5" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(342, 510)
+tuft_type = "wildflower_gold"
+
+[node name="Tuft_Church6" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(345, 570)
+tuft_type = "clover"
+
+[node name="Tuft_Cedric1" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(705, 185)
+tuft_type = "tall"
+
+[node name="Tuft_Cedric2" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(705, 230)
+tuft_type = "wildflower_gold"
+
+[node name="Tuft_Cedric3" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(860, 295)
+tuft_type = "wildflower_blue"
+
+[node name="Tuft_Cedric4" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(925, 280)
+tuft_type = "tall"
+
+[node name="Tuft_Vault1" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(760, 485)
+tuft_type = "boulder"
+
+[node name="Tuft_Vault2" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(820, 495)
+tuft_type = "tall"
+
+[node name="Tuft_Vault3" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(880, 495)
+tuft_type = "wildflower_gold"
+
+[node name="Tuft_Vault4" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(940, 495)
+tuft_type = "clover"
+
+[node name="Tuft_TreeNW1" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(65, 80)
+tuft_type = "tall"
+
+[node name="Tuft_TreeNW2" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(320, 80)
+tuft_type = "wildflower_blue"
+
+[node name="Tuft_TreeN1" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(720, 80)
+tuft_type = "clover"
+
+[node name="Tuft_TreeNE1" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(1045, 80)
+tuft_type = "moss_rock"
+
+[node name="Tuft_TreeW1" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(55, 370)
+tuft_type = "tall"
+
+[node name="Tuft_TreeSW1" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(65, 610)
+tuft_type = "wildflower_gold"
+
+[node name="Tuft_TreeS1" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(485, 610)
+tuft_type = "tall"
+
+[node name="Tuft_TreeS2" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(745, 610)
+tuft_type = "clover"
+
+[node name="Tuft_TreeCedric" parent="Environment/GrassTufts" instance=ExtResource("29_tuft")]
+position = Vector2(945, 175)
+tuft_type = "wildflower_blue"
+
+[node name="AmbientWind" type="CPUParticles2D" parent="Environment"]
+position = Vector2(576, 324)
+amount = 28
+lifetime = 6.0
+emission_shape = 3
+emission_rect_extents = Vector2(600, 350)
+direction = Vector2(1, 0.45)
+spread = 20.0
+gravity = Vector2(0, 4)
+initial_velocity_min = 30.0
+initial_velocity_max = 70.0
+scale_amount_min = 2.0
+scale_amount_max = 4.0
+color = Color(0.92, 0.88, 0.45, 0.65)
+
 [node name="Buildings" type="Node2D" parent="." unique_id=1561909110]
 
 [node name="BakeryBuilding" parent="Buildings" unique_id=1628056481 instance=ExtResource("11_bld")]
@@ -136,6 +509,19 @@ position = Vector2(180, 130)
 building_texture = ExtResource("4_house1")
 building_name = "Marla's Bakery"
 custom_polygon = PackedVector2Array(-10, -96, -12, -88, -20, -80, -24, -86, -54, -84, -50, -50, -76, -24, -76, -12, -80, -8, -80, 10, -76, 12, -80, 16, -80, 32, -70, 34, -70, 48, -66, 48, -70, 56, -70, 86, -62, 94, -28, 94, -16, 110, 14, 110, 26, 94, 60, 94, 68, 86, 68, 56, 64, 48, 68, 48, 68, 34, 78, 32, 78, 16, 74, 12, 78, 10, 78, -8, 74, -12, 74, -24, 10, -88, 10, -94)
+
+[node name="ChimneySmoke" type="CPUParticles2D" parent="Buildings/BakeryBuilding"]
+position = Vector2(-32, -50)
+amount = 16
+lifetime = 3.5
+direction = Vector2(0.3, -1)
+spread = 15.0
+gravity = Vector2(6, -10)
+initial_velocity_min = 12.0
+initial_velocity_max = 28.0
+scale_amount_min = 2.5
+scale_amount_max = 6.0
+color = Color(0.9, 0.9, 0.9, 0.35)
 
 [node name="MerchantShop" parent="Buildings" unique_id=1400753802 instance=ExtResource("11_bld")]
 position = Vector2(550, 240)

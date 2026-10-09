@@ -25,6 +25,7 @@ func _init() -> void:
 	test_evaluation_threshold_rules()
 	test_npc_conversation_history_isolation()
 	test_character_sprites_and_animations()
+	test_environmental_foliage_paths_and_particles()
 	
 	print("\n-------------------------------------------------------")
 	print("🏁 TEST RESULTS: %d PASSED, %d FAILED" % [passed_count, failed_count])
@@ -701,5 +702,85 @@ func test_character_sprites_and_animations() -> void:
 	assert_true(guard_sprite.texture.resource_path.contains("guard_knight"), "Guard uses guard_knight.png")
 	
 	main.queue_free()
+
+
+func test_environmental_foliage_paths_and_particles() -> void:
+	print("\n▶ Testing Environmental Shaders, Dynamic Wavy Grass, Bordered Paths & Particles...")
+	
+	# 1. Shader resources
+	var wind_shader := load("res://shaders/wind_sway.gdshader") as Shader
+	assert_true(wind_shader != null, "wind_sway.gdshader loads successfully")
+	
+	var ripple_shader := load("res://shaders/grass_wind_ripple.gdshader") as Shader
+	assert_true(ripple_shader != null, "grass_wind_ripple.gdshader loads successfully")
+	
+	# 2. Main scene environment nodes
+	var main_scene := load("res://scenes/main.tscn")
+	var main = main_scene.instantiate()
+	root.add_child(main)
+	
+	# Grass meadow background shader
+	var grass_bg = main.get_node("Ground/GrassBackground") as TextureRect
+	assert_true(grass_bg != null, "GrassBackground exists in main scene")
+	assert_true(grass_bg.material is ShaderMaterial, "GrassBackground has ShaderMaterial assigned")
+	
+	# Plaza NinePatch path with 9-patch terrain texture
+	var plaza = main.get_node("Ground/PlazaCenter") as NinePatchRect
+	assert_true(plaza != null, "PlazaCenter is a NinePatchRect")
+	assert_eq(plaza.patch_margin_left, 16, "PlazaCenter patch_margin_left is 16px")
+	assert_eq(plaza.patch_margin_top, 16, "PlazaCenter patch_margin_top is 16px")
+	assert_true(plaza.texture != null, "PlazaCenter has texture assigned")
+	assert_true(plaza.texture.resource_path.contains("path_terrain_9patch"), "PlazaCenter uses path_terrain_9patch.png")
+	
+	# Branching paths
+	var bakery_path = main.get_node("Ground/BakeryPath") as NinePatchRect
+	assert_true(bakery_path != null, "BakeryPath exists as NinePatchRect")
+	var church_path = main.get_node("Ground/ChurchPath") as NinePatchRect
+	assert_true(church_path != null, "ChurchPath exists as NinePatchRect")
+	var cedric_path = main.get_node("Ground/CedricPath") as NinePatchRect
+	assert_true(cedric_path != null, "CedricPath exists as NinePatchRect")
+	var vault_path = main.get_node("Ground/VaultPath") as NinePatchRect
+	assert_true(vault_path != null, "VaultPath exists as NinePatchRect")
+	
+	# Stepping stone & paver details
+	var path_details = main.get_node("Ground/PathDetails")
+	assert_true(path_details != null, "PathDetails container exists")
+	assert_true(path_details.get_child_count() >= 20, "PathDetails contains >= 20 pavers, pebbles, and cracked earth props")
+	
+	# Town Well
+	var well = main.get_node("Environment/VillageWell")
+	assert_true(well != null, "VillageWell exists in central plaza")
+	var well_col = well.get_node_or_null("CollisionShape2D")
+	assert_true(well_col != null, "VillageWell has CollisionShape2D")
+	
+	# Wavy Grass Tufts
+	var grass_tufts = main.get_node("Environment/GrassTufts")
+	assert_true(grass_tufts != null, "GrassTufts container exists")
+	assert_true(grass_tufts.get_child_count() >= 40, "GrassTufts has >= 40 swaying foliage tufts across the village")
+	var sample_tuft = grass_tufts.get_child(0) as GrassTuft
+	assert_true(sample_tuft != null, "First grass tuft is a GrassTuft instance")
+	var tuft_sprite: Sprite2D = sample_tuft.get_node("Sprite2D")
+	assert_true(tuft_sprite != null, "GrassTuft has Sprite2D")
+	assert_true(tuft_sprite.material is ShaderMaterial, "GrassTuft Sprite2D uses ShaderMaterial for wind sway")
+	
+	# Tree Canopy Wind Sway
+	var tree_nw1 = main.get_node("Environment/Tree_NW1")
+	assert_true(tree_nw1 != null, "Tree_NW1 exists")
+	var tree_sprite: Sprite2D = tree_nw1.get_node("Sprite2D")
+	assert_true(tree_sprite != null, "Tree has Sprite2D")
+	assert_true(tree_sprite.material is ShaderMaterial, "Tree Sprite2D has ShaderMaterial for canopy wind sway")
+	
+	# Ambient Wind Particles
+	var wind_particles = main.get_node("Environment/AmbientWind") as CPUParticles2D
+	assert_true(wind_particles != null, "AmbientWind particles exist in village scene")
+	assert_true(wind_particles.emitting, "AmbientWind particles are emitting")
+	
+	# Bakery Chimney Smoke
+	var bakery_smoke = main.get_node("Buildings/BakeryBuilding/ChimneySmoke") as CPUParticles2D
+	assert_true(bakery_smoke != null, "ChimneySmoke particles exist on Bakery")
+	assert_true(bakery_smoke.emitting, "ChimneySmoke particles are emitting")
+	
+	main.queue_free()
+
 
 
