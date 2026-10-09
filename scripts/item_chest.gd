@@ -13,10 +13,21 @@ var is_collected: bool = false
 
 @onready var prompt_label: Label = $PromptLabel
 @onready var color_rect: ColorRect = $ColorRect
+@onready var sprite: Sprite2D = $Sprite2D
 
 
 func _ready() -> void:
-	color_rect.color = chest_color
+	var game_state = get_node_or_null("/root/GameState")
+	if game_state and game_state.has_method("get_item_icon"):
+		sprite.texture = game_state.get_item_icon(item_id)
+	
+	if game_state and game_state.has_item(item_id):
+		is_collected = true
+		visible = false
+		process_mode = Node.PROCESS_MODE_DISABLED
+		return
+
+	color_rect.visible = false
 	prompt_label.visible = false
 	prompt_label.text = "[E] Pick up %s" % item_name
 	body_entered.connect(_on_body_entered)
@@ -47,5 +58,5 @@ func _collect_item() -> void:
 	if game_state and game_state.has_method("add_item"):
 		game_state.add_item(item_id, item_name, item_description)
 		is_collected = true
-		prompt_label.text = "[Collected]"
-		color_rect.color = Color(0.4, 0.4, 0.4, 0.6)
+		visible = false
+		process_mode = Node.PROCESS_MODE_DISABLED
